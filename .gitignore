@@ -1,0 +1,27 @@
+# Compiled binary files
+*.exe
+*.o
+*.a
+*.out
+
+# Generated files
+/_gen/
+*.gen.go
+
+# Dependency directories
+/vendor/
+/Godeps/
+/go.sum
+
+
+# Output directories
+/bin/
+/pkg/
+/dist/
+/build/
+
+# IDE and editor directories/files
+.idea/
+.vscode/
+*.swp
+*.swo

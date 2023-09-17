@@ -1,0 +1,23 @@
+# Go specific
+*.exe
+*.dll
+*.exe~
+*.dll~
+*.exe.sig
+*.dll.sig
+
+# Compiled Object files, Static and Dynamic libs
+*.o
+*.a
+*.so
+
+# Folders
+_obj
+_test
+test_output
+.vscode
+
+# OS generated files
+ehthumbs.db
+Icon?
+Thumbs.db
