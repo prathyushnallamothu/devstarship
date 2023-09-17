@@ -8,8 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      G_TOKEN: ${{ secrets.G_TOKEN }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -22,12 +20,18 @@ jobs:
         run: go mod tidy
         
       - name: Build for Linux
+        env:
+          G_TOKEN: ${{ secrets.G_TOKEN }}      
         run: GOOS=linux GOARCH=amd64 go build -o devstarship-linux
 
       - name: Build for macOS
+        env:
+          G_TOKEN: ${{ secrets.G_TOKEN }} 
         run: GOOS=darwin GOARCH=amd64 go build -o devstarship-mac
 
       - name: Build for Windows
+        env:
+          G_TOKEN: ${{ secrets.G_TOKEN }} 
         run: GOOS=windows GOARCH=amd64 go build -o devstarship-windows.exe
 
       - name: Archive Artifacts
