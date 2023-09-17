@@ -12,7 +12,7 @@
 /vendor/
 /Godeps/
 /go.sum
-
+/.env
 
 # Output directories
 /bin/
