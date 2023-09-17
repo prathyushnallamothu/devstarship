@@ -1,0 +1,37 @@
+name: Build Go Application
+
+on:
+  push:
+    branches:
+      - master # Adjust the branch name as needed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19 # Adjust the Go version as needed
+
+      - name: Build for Linux
+        run: GOOS=linux GOARCH=amd64 go build -o devstarship-linux
+
+      - name: Build for macOS
+        run: GOOS=darwin GOARCH=amd64 go build -o devstarship-mac
+
+      - name: Build for Windows
+        run: GOOS=windows GOARCH=amd64 go build -o devstarship-windows.exe
+
+      - name: Archive Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts
+          path: |
+            devstarship-linux
+            devstarship-mac
+            devstarship-windows.exe
