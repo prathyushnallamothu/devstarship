@@ -42,3 +42,5 @@ jobs:
             devstarship-linux
             devstarship-mac
             devstarship-windows.exe
+      - name: Debug Environment Variable
+        run: echo "G_TOKEN=$G_TOKEN"
