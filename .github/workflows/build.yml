@@ -42,6 +42,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        
       - name: Get Current Version
         id: version
         run: echo "::set-output name=version::$(cat VERSION)"
@@ -71,7 +74,7 @@ jobs:
           name: Release v${{ steps.increment_version.outputs.new_version }}
           body: |
             Changes in this release:
-            - Add release notes here
+            - DevStarship beta
           draft: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
