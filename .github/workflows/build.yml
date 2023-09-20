@@ -44,7 +44,7 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-        
+
       - name: Get Current Version
         id: version
         run: echo "::set-output name=version::$(cat VERSION)"
@@ -54,7 +54,7 @@ jobs:
         run: echo "::set-output name=new_version::$(echo "${{ steps.version.outputs.version }}" | awk -F. '{$NF++; OFS="."; print $0}')"
 
       - name: Create Git Tag
-        run: git tag -a v${{ steps.increment_version.outputs.new_version }} -m "Version v${{ steps.increment_version.outputs.new_version }}"
+        run: git tag -a "v${{ steps.increment_version.outputs.new_version }}" -m "Version v${{ steps.increment_version.outputs.new_version }}"
         env:
           GIT_TAG: v${{ steps.increment_version.outputs.new_version }}
 
