@@ -42,6 +42,24 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Get Current Version
+        id: version
+        run: echo "::set-output name=version::$(cat VERSION)"
+
+      - name: Increment Version
+        id: increment_version
+        run: echo "::set-output name=new_version::$(echo "${{ steps.version.outputs.version }}" | awk -F. '{$NF++; OFS="."; print $0}')"
+
+      - name: Create Git Tag
+        run: git tag -a v${{ steps.increment_version.outputs.new_version }} -m "Version v${{ steps.increment_version.outputs.new_version }}"
+        env:
+          GIT_TAG: v${{ steps.increment_version.outputs.new_version }}
+
+      - name: Push Git Tag
+        run: git push origin $GIT_TAG
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
@@ -50,7 +68,7 @@ jobs:
             ./devstarship-linux
             ./devstarship-mac
             ./devstarship-windows.exe
-          name: Release ${{ github.sha }}
+          name: Release v${{ steps.increment_version.outputs.new_version }}
           body: |
             Changes in this release:
             - Add release notes here
