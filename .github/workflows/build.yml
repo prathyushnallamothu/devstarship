@@ -48,6 +48,11 @@ jobs:
       - name: Get Current Version
         id: version
         run: echo "::set-output name=version::$(cat VERSION)"
+      
+      - name: Set Git User Identity
+        run: |
+          git config --global user.email "prathyushbablu@gmail.com"
+          git config --global user.name "prathyushnallamothu"
 
       - name: Create Git Tag
         run: git tag -a "v${{ steps.version.outputs.version }}" -m "Version v${{ steps.version.outputs.version }}"
