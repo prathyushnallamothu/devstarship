@@ -1,15 +1,13 @@
-name: Build Go Application
+name: Build and Release Go Application
 
 on:
   push:
     branches:
-      - master # Adjust the branch name as needed
+      - master
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    env:
-      G_TOKEN: ${{ secrets.G_TOKEN }}   
+    runs-on: ubuntu-latest 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -17,23 +15,18 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.19 # Adjust the Go version as needed
+          go-version: 1.19
+
       - name: Go Mod Tidy
         run: go mod tidy
-        
-      - name: Build for Linux
-        env:
-          G_TOKEN: ${{ secrets.G_TOKEN }}      
+
+      - name: Build for Linux    
         run: GOOS=linux GOARCH=amd64 go build -o devstarship-linux
 
       - name: Build for macOS
-        env:
-          G_TOKEN: ${{ secrets.G_TOKEN }} 
         run: GOOS=darwin GOARCH=amd64 go build -o devstarship-mac
 
       - name: Build for Windows
-        env:
-          G_TOKEN: ${{ secrets.G_TOKEN }} 
         run: GOOS=windows GOARCH=amd64 go build -o devstarship-windows.exe
 
       - name: Archive Artifacts
@@ -44,5 +37,23 @@ jobs:
             devstarship-linux
             devstarship-mac
             devstarship-windows.exe
-      - name: Debug Environment Variable
-        run: echo "G_TOKEN=$G_TOKEN"
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./devstarship-linux
+            ./devstarship-mac
+            ./devstarship-windows.exe
+          name: Release ${{ github.sha }}
+          body: |
+            Changes in this release:
+            - Add release notes here
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

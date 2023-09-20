@@ -3,8 +3,8 @@ package cmd
 import (
 	"devstarship/config"
 	"devstarship/utils"
+	"encoding/json"
 	"fmt"
-	"os"
 
 	"github.com/google/go-github/v33/github"
 	"github.com/spf13/cobra"
@@ -14,7 +14,7 @@ import (
 var projectName string
 var projectDescription string
 var dockerUsername string
-
+var token string
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
@@ -26,9 +26,8 @@ var initCmd = &cobra.Command{
 			Version:        "0.1.0", // You can set a default version or prompt for it.
 			DockerUsername: dockerUsername,
 		}
-		fmt.Println(config)
-		token := os.Getenv("G_TOKEN")
-		fmt.Println(token)
+		cjson,_:=json.Marshal(config)
+		fmt.Println(cjson)
 		ts := oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: token},
 		)
@@ -48,7 +47,9 @@ func init() {
 	initCmd.Flags().StringVarP(&projectName, "name", "n", "", "Project name (required)")
 	initCmd.Flags().StringVarP(&projectDescription, "description", "d", "", "Project description")
 	initCmd.Flags().StringVarP(&dockerUsername, "docker-username", "u", "", "Docker username (required)")
+	initCmd.Flags().StringVarP(&token, "github-pat", "g", "", "Github Personal Acess Token (required)")
 	initCmd.MarkFlagRequired("name")
 	initCmd.MarkFlagRequired("docker-username")
+	initCmd.MarkFlagRequired("github-pat")
 	rootCmd.AddCommand(initCmd)
 }
