@@ -27,8 +27,10 @@ jobs:
 
       - name: Build for macOS
         run: |
-          GOOS=darwin GOARCH=amd64 go build -o devstarship-mac
-          chmod +x devstarship-mac
+          GOOS=darwin GOARCH=amd64 go build -o devstarship-mac-amd64
+          GOOS=darwin GOARCH=arm64 go build -o devstarship-mac-arm64
+          lipo -create -output devstarship-mac devstarship-mac-amd64 devstarship-mac-arm64
+          chmod +x devstarship-mac  # Ensure the binary is executable
           ./devstarship-mac -h  # Replace with your actual test command
 
       - name: Build for Windows
