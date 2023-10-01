@@ -27,7 +27,7 @@ var initCmd = &cobra.Command{
 			DockerUsername: dockerUsername,
 		}
 		cjson,_:=json.Marshal(config)
-		fmt.Println(cjson)
+		fmt.Println(string(cjson))
 		ts := oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: token},
 		)

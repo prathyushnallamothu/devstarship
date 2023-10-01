@@ -20,14 +20,20 @@ jobs:
       - name: Go Mod Tidy
         run: go mod tidy
 
-      - name: Build for Linux    
-        run: GOOS=linux GOARCH=amd64 go build -o devstarship-linux
+      - name: Build for Linux
+        run: |
+          GOOS=linux GOARCH=amd64 go build -o devstarship-linux
+          ./devstarship-linux -h  # Replace with your actual test command
 
       - name: Build for macOS
-        run: GOOS=darwin GOARCH=amd64 go build -o devstarship-mac
+        run: |
+          GOOS=darwin GOARCH=amd64 go build -o devstarship-mac
+          ./devstarship-mac -h  # Replace with your actual test command
 
       - name: Build for Windows
-        run: GOOS=windows GOARCH=amd64 go build -o devstarship-windows.exe
+        run: |
+          GOOS=windows GOARCH=amd64 go build -o devstarship-windows.exe
+          ./devstarship-windows.exe -h  # Replace with your actual test command
 
       - name: Archive Artifacts
         uses: actions/upload-artifact@v2

@@ -32,6 +32,7 @@ func CreateDirectoriesIfNotExist(dirPath string) error {
 }
 
 func StringExists(target string, array []string) bool {
+	fmt.Println(array)
 	for _, element := range array {
 		if element == target {
 			return true
@@ -65,8 +66,9 @@ func ProcessGitHubContent(ctx context.Context, client *github.Client, config con
 	if err != nil {
 		return err
 	}
-
+	
 	for _, file := range contents {
+		fmt.Println(*file.Path)
 		if file.Type != nil {
 			if *file.Type == "file" {
 
@@ -100,13 +102,13 @@ func ProcessGitHubContent(ctx context.Context, client *github.Client, config con
 					return err
 				}
 				defer outputFile.Close()
-				if StringExists("templates", strings.Split(*file.Path, `\`)) {
-					if err := tmpl.Execute(outputFile, config); err != nil {
+				if StringExists("templates", strings.Split(*file.Path, `/`)) {
+					_, err = outputFile.WriteString(fileContent)
+					if err != nil {
 						return err
 					}
 				} else {
-					_, err = outputFile.WriteString(fileContent)
-					if err != nil {
+					if err := tmpl.Execute(outputFile, config); err != nil {
 						return err
 					}
 				}
